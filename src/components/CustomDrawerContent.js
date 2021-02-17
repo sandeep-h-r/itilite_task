@@ -15,7 +15,7 @@ import {capitalize} from '../utils/common';
 
 export default function DrawerContent(props) {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [profilePic, setprofilePic] = useState('');
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function DrawerContent(props) {
 
   const getUserData = async () => {
     const userData = await store.get('userDetails');
-    setName(userData.name);
+    setEmail(userData.email);
     setprofilePic(userData.profilePic);
   };
 
@@ -55,7 +55,7 @@ export default function DrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <ItView style={styles.drawerContent}>
         <ItView style={styles.userInfoSection}>
-          <TouchableOpacity onPress={uploadPicture}>
+          <TouchableOpacity onPress={uploadPicture} style={styles.drawerImage}>
             {profilePic ? (
               <Image
                 style={styles.avatar}
@@ -65,12 +65,16 @@ export default function DrawerContent(props) {
               />
             ) : (
               <ItView style={[styles.avatar, styles.noImage]}>
-                <ItText>{name.substring(0, 2).toUpperCase()}</ItText>
+                <ItText>
+                  {email.split('@', 1)[0].substring(0, 2).toUpperCase()}
+                </ItText>
               </ItView>
             )}
             <ItText type={'Caption'}>{'Click to change image'}</ItText>
           </TouchableOpacity>
-          <ItText style={styles.title}>{capitalize(name)}</ItText>
+          <ItText style={styles.title}>
+            {capitalize(email.split('@', 1)[0])}
+          </ItText>
         </ItView>
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
@@ -90,6 +94,7 @@ export default function DrawerContent(props) {
               />
             )}
             label="Home"
+            labelStyle={styles.labelStyle}
             onPress={() => {
               props.navigation.navigate('Home');
             }}
@@ -111,9 +116,46 @@ export default function DrawerContent(props) {
               />
             )}
             label="Browse"
+            labelStyle={styles.labelStyle}
             onPress={() => {
               props.navigation.navigate('WebSearch');
             }}
+          />
+          <DrawerItem
+            activeBackgroundColor={COLORS.PRIMARY}
+            inactiveBackgroundColor={COLORS.TRANSPARENT}
+            inactiveTintColor={COLORS.BLACK}
+            icon={({color, size, focused}) => (
+              <ItIcons
+                size={normalize(25)}
+                type={'MaterialIcons'}
+                name={'logout'}
+                style={[
+                  {
+                    color: focused ? COLORS.PRIMARY : COLORS.BLACK,
+                  },
+                ]}
+              />
+            )}
+            label="Logout"
+            labelStyle={styles.labelStyle}
+            onPress={async () => {
+              await store
+                .clear()
+                .then((res) => {
+                  if (res === null) {
+                    props.navigation.reset({
+                      index: 0,
+                      routes: [{name: 'UserDetails'}],
+                    });
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              // props.navigation.navigate('WebSearch');
+            }}
+            style={{marginTop: normalize(100)}}
           />
         </Drawer.Section>
       </ItView>
@@ -131,17 +173,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    marginTop: normalize(20),
+    marginTop: normalize(5),
     fontWeight: 'bold',
   },
   drawerSection: {
     marginTop: normalize(15),
-  },
-  preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: normalize(12),
-    paddingHorizontal: normalize(16),
   },
   avatar: {
     width: normalize(80),
@@ -152,5 +188,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.SECONDARY,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  drawerImage: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  labelStyle: {
+    marginLeft: normalize(-15),
   },
 });

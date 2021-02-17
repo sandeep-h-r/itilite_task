@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   titlecontainer: {
     flex: 1,
-    marginHorizontal: normalize(8),
+    // marginHorizontal: normalize(8),
   },
   subTitle: {
     lineHeight: normalize(12),
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY,
   },
   innerContainer: {
-    flex: 0.2,
+    flex: 0.15,
     alignItems: 'flex-start',
   },
   transparentColor: {

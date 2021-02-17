@@ -15,7 +15,7 @@ import {capitalize} from '../utils/common';
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const picData = useSelector((state) => state.home.saveProfilePic);
   const [profilePic, setprofilePic] = useState('');
   const isLoading = useSelector((state) => state.home.fetchingData);
@@ -27,7 +27,7 @@ export default function HomeScreen() {
 
   const getUserData = async () => {
     const userData = await store.get('userDetails');
-    setName(userData.name);
+    setEmail(userData.email);
     setprofilePic(userData.profilePic);
   };
 
@@ -67,7 +67,7 @@ export default function HomeScreen() {
             <ItText type={'Text'} style={styles.dateText}>
               {moment().format('MMM DD, YYYY')}
             </ItText>
-            <ItText>{capitalize(name)}</ItText>
+            <ItText>{capitalize(email.split('@', 1)[0])}</ItText>
           </ItView>
           <ItView>
             {profilePic ? (
@@ -79,7 +79,9 @@ export default function HomeScreen() {
               />
             ) : (
               <ItView style={[styles.avatar, styles.noImage]}>
-                <ItText>{name.substring(0, 2).toUpperCase()}</ItText>
+                <ItText>
+                  {email.split('@', 1)[0].substring(0, 2).toUpperCase()}
+                </ItText>
               </ItView>
             )}
           </ItView>
@@ -210,7 +212,7 @@ const styles = StyleSheet.create({
   rowCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: normalize(15),
+    marginHorizontal: normalize(15),
   },
   colCard: {
     paddingVertical: normalize(10),

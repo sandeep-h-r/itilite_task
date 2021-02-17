@@ -13,7 +13,6 @@ import itilite_logo from '../assets/itilite_logo.png';
 export default function UserDetails(props) {
   const [state, setstate] = useState({
     email: '',
-    name: '',
     profilePic: '',
   });
 
@@ -25,15 +24,9 @@ export default function UserDetails(props) {
   };
 
   const handleSubmit = async () => {
-    if (state.email && validateEmail(state.email) && state.name) {
+    if (state.email && validateEmail(state.email)) {
       await store.save('userDetails', state);
       props.navigation.navigate('Main');
-    } else if (!state.name) {
-      ItToast({
-        message: 'Please enter a valid Username',
-        duration: 'SHORT',
-        position: 'CENTER',
-      });
     } else if (!state.email || !validateEmail(state.email)) {
       ItToast({
         message: 'Please enter a valid EmailID',
@@ -51,20 +44,9 @@ export default function UserDetails(props) {
   return (
     <ItView style={styles.container}>
       <Image source={itilite_logo} style={styles.image} />
-      <ItText>Please enter the user details</ItText>
+      <ItText>Please enter the Email ID</ItText>
       <ItTextInput
-        label={'Username*'}
-        placeholder={'Enter the Username'}
-        value={state.name}
-        onChangeText={handleChange('name')}
-        style={{
-          marginVertical: normalize(20),
-          marginHorizontal: normalize(25),
-          width: dim().width * 0.9,
-        }}
-      />
-      <ItTextInput
-        label={'EmailID*'}
+        label={'Email ID*'}
         placeholder={'Enter the Email'}
         value={state.email}
         keyboardType="email-address"
@@ -99,8 +81,8 @@ const styles = StyleSheet.create({
     color: COLORS.BLACK,
   },
   image: {
-    width: dim().width * 0.6,
-    height: normalize(50),
+    width: dim().width * 0.4,
+    height: normalize(40),
     resizeMode: 'contain',
     marginBottom: normalize(50),
   },

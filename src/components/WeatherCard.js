@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     width: dim().width * 0.45,
     padding: normalize(15),
     borderRadius: normalize(10),
-    marginVertical: normalize(15),
+    marginBottom: normalize(12),
   },
   icon: {
     color: COLORS.WHITE,

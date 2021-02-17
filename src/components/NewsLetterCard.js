@@ -52,7 +52,8 @@ export default function NewsLetterCard(props) {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    margin: normalize(15),
+    marginHorizontal: normalize(12),
+    marginTop: normalize(12),
     padding: normalize(5),
     backgroundColor: COLORS.BACKGROUND,
     borderRadius: normalize(10),
